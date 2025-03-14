@@ -70,7 +70,7 @@ sp-keystore = { workspace = true,  default-features = false }
 
 
 # These dependencies are used for the subtensor's RPCs
-jsonrpsee = { workspace = true, features = ["server"] }
+jsonrpsee = { workspace = true, features = ["server", "macros"] }
 sc-rpc = { workspace = true }
 sp-api = { workspace = true }
 sc-rpc-api = { workspace = true }

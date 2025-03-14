@@ -20,8 +20,8 @@ use sc_network::service::traits::NetworkService;
 use sc_network_sync::SyncingService;
 use sc_rpc::SubscriptionTaskExecutor;
 use sc_transaction_pool::{ChainApi, Pool};
-use sc_transaction_pool_api::TransactionPool;
 use sp_core::H256;
+use sc_transaction_pool_api::TransactionPool;
 use sp_inherents::CreateInherentDataProviders;
 use sp_runtime::traits::Block as BlockT;
 
@@ -83,6 +83,7 @@ impl fc_rpc::EthConfig<Block, FullClient> for DefaultEthConfig {
     >;
 }
 
+
 /// Full client dependencies.
 pub struct FullDeps<P, A: ChainApi, CT, CIDP> {
     /// The client instance to use.
@@ -114,7 +115,7 @@ where
     use pallet_transaction_payment_rpc::{TransactionPayment, TransactionPaymentApiServer};
     use sc_consensus_manual_seal::rpc::{ManualSeal, ManualSealApiServer};
     use substrate_frame_rpc_system::{System, SystemApiServer};
-    use subtensor_custom_rpc::{SubtensorCustom, SubtensorCustomApiServer};
+	use crate::subtensor_custom_rpc::SubtensorCustomRpc;
 
     let mut module = RpcModule::new(());
     let FullDeps {
@@ -125,7 +126,7 @@ where
     } = deps;
 
     // Custom RPC methods for Paratensor
-    module.merge(SubtensorCustom::new(client.clone()).into_rpc())?;
+	module.merge(SubtensorCustomRpc::new(pool.clone()).into_rpc())?;
 
     module.merge(System::new(client.clone(), pool.clone()).into_rpc())?;
     module.merge(TransactionPayment::new(client).into_rpc())?;
